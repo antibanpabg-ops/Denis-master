@@ -61,31 +61,15 @@
     <div class="container">
 
         <!-- Гимн Мастера -->
-        <div class="player-box">
-            <h3>🎵 Гимн Мастера Дениса</h3>
-            <p>Нажми кнопку ниже, чтобы включить музыку!</p>
-            <button class="play-btn" id="audioToggle">▶ Включить трек</button>
+<div class="card" style="text-align: center;">
+    <h2>🎵 Гимн Мастера Дениса</h2>
+    <p style="margin-bottom: 10px;">Слушать трек:</p>
+    <audio controls style="width: 100%; max-width: 400px;">
+        <source src="song.mp3" type="audio/mpeg">
+        Ваш браузер не поддерживает аудио.
+    </audio>
+</div>
 
-            <div class="lyrics-box">
-<b>[Куплет 1]</b>
-В доме паника и шок, стиралка громко плачет,
-Холодильник перестал хранить продукт «горячий».
-Чайник искры выбивает, печка сбавила накал…
-Кто спасёт наш тихий быт? Кого же мы искали?
-Не ждём мы Бэтмена из тьмы, не ждём мы Человека-Паука,
-Ведь есть уверенная, чёткая Денисова рука!
-
-<b>[Припев]</b>
-Денис — мастер бытовой!
-Он вернёт приборам бой!
-Фен, мультиварка, пылесос —
-Он решит любой вопрос!
-Сверкнёт отвёртка в тишине,
-И кофеварка снова в теме!
-Денчик за дело взялся круто —
-И всё работает за пару минут-о!
-            </div>
-        </div>
 
         <!-- Услуги -->
         <div class="card">
@@ -129,49 +113,5 @@
         </footer>
     </div>
 
-    <script>
-        let audioCtx = null;
-        let isPlaying = false;
-        let timerId = null;
-        const playBtn = document.getElementById('audioToggle');
-
-        function playNote(freq, duration) {
-            if (!audioCtx) return;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'triangle';
-            osc.frequency.value = freq;
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            const now = audioCtx.currentTime;
-            gain.gain.setValueAtTime(0.12, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
-            osc.start(now);
-            osc.stop(now + duration);
-        }
-
-        const melody = [
-            {f: 261.63, d: 0.3}, {f: 329.63, d: 0.3}, {f: 392.00, d: 0.3}, {f: 523.25, d: 0.5},
-            {f: 440.00, d: 0.3}, {f: 349.23, d: 0.3}, {f: 392.00, d: 0.6}
-        ];
-        let idx = 0;
-
-        playBtn.addEventListener('click', () => {
-            if (isPlaying) {
-                isPlaying = false;
-                clearInterval(timerId);
-                playBtn.textContent = '▶ Включить трек';
-            } else {
-                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                if (audioCtx.state === 'suspended') audioCtx.resume();
-                isPlaying = true;
-                playBtn.textContent = '⏸ Остановить трек';
-                timerId = setInterval(() => {
-                    playNote(melody[idx].f, melody[idx].d);
-                    idx = (idx + 1) % melody.length;
-                }, 400);
-            }
-        });
-    </script>
 </body>
 </html>
